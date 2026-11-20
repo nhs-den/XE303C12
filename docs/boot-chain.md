@@ -63,6 +63,16 @@ Karena itu XE303OS memaketkan U-Boot chainloading di KERN-A/B (jalur yang
 terbukti jalan di perangkat ini) dan menyisakan `BOOT_MODE=vboot-direct`
 (mkdepthcharge + vboot) untuk orang yang tahu risiko atau untuk board non-Exynos.
 
+Nuansa yang perlu dicatat supaya tidak jadi dogma: penolakan itu **tidak
+universal**. Image Kali 2019.3 "exynos chromebook" — satu partisi kernel
+(vboot) + rootfs ext4 di partisi berikutnya — dilaporkan boot dan dipakai di
+XE303C12 (mis. panduan Instructables Sirius38, 2020: `growpart /dev/mmcblk1 2`,
+`resize2fs`, lalu `cgpt repair`). Kesimpulan yang benar bukan "vboot mustahil",
+melainkan: **vboot langsung = 1 taruhan tambahan**, dan pada 2 GB RAM/16 GB eMMC
+kamu tidak mau menghabiskan sore untuk mengalahkan firmware. Karena itu kedua
+jalur ada di repo ini; coba `uboot-extlinux` dulu, `vboot-direct` sebagai
+percobaan kedua (`make BOOT_MODE=vboot-direct image`).
+
 ## Isi tiap partisi
 
 | # | Nama | Tipe GUID | FS | Isi |

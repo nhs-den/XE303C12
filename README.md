@@ -137,6 +137,38 @@ bukan partisi setelah KERN-A. Ukuran & nama partisi diatur di `config/build.conf
 | GPU 3D | **tidak** | Mali-T604 tanpa driver mainline |
 | Sleep (suspend-to-RAM) | bervariasi | `s2ram`/`systemctl suspend`; sering perlu `usb3_autosuspend` |
 
+## Referensi & kerja terkait (dibaca sebelum menyalahkan kit ini)
+
+Kit ini dibangun dari fakta yang dikumpulkan dari sini — dan beberapa
+keputusan di review ulang karena mereka:
+
+* Instructables, *Linux on XE303C12 Chromebook* (Sirius38, 2020) — bukti nyata
+  bahwa jalur "image ARM exynos di-flash ke SD → dev mode → `crossystem
+  dev_boot_usb=1` → `Ctrl+U`" jalan di unit ini, dan bahwa resize wajib
+  ditutup dengan **`cgpt repair`** (kita sudah pakai itu di `firstboot.sh` dan
+  `tools/grow-partition.sh`). Yang **tidak** bisa diambil dari sana: image-nya
+  Kali 2019.3 (arsip repo sudah mati → `apt upgrade` hari ini merusak), tidak
+  ada perbaikan audio/WiFi/keyboard, dan tidak ada jalur aman untuk upgrade
+  kernel.
+* `archlinuxarm.org/platforms/armv7/samsung/*` — sumber prosedur unmute speaker
+  max98090 (4 jalur "Left/Right Speaker Mixer") yang kita otomatiskan.
+* `velvet-os/imagebuilder` + `u-boot-chainloading-for-arm-chromebooks`
+  (hexdump0815) — alasan `BOOT_MODE=uboot-extlinux` jadi default, dan kutipan
+  "peach chromebooks seem to not boot ... not at all from usb devices".
+* `github.com/alpernebbi/depthcharge-tools` (`mkdepthcharge`, `depthchargectl`)
+  — dipakai untuk jalur `vboot-direct` + hook upgrade kernel.
+* Chromium OS *Disk format* — GUID partisi kernel `fe3a2a5d-…`, atribut
+  `cgpt`, alignment 2 MiB, `kern_guid=%U/PARTNROFF=1` (kita pakai
+  `root=UUID=` karena rootfs kita bukan partisi berikutnya).
+* `linux-exynos.org/wiki/Samsung_Chromebook_XE303C12` — bridge **PTN3460**
+  eDP→LVDS, codec **MAX98090**, WiFi **Marvell 88W8797**, errata **773022**.
+  Semuanya ada di `config/kernel-cmdline.conf`, `40-hardware.sh`,
+  `config/packages/hardware.list`.
+
+Kalau kamu datang dari guide Instructables itu dan cuma mau sistemnya jalan:
+flash image hasil `make image`, lupakan langkah Kali-nya. Kalau kamu mau tahu
+kenapa bentuknya begini: [docs/boot-chain.md](docs/boot-chain.md).
+
 ## Kontribusi / roadmap singkat
 
 Dibutuhkan: (1) laporan hasil boot per HWID biar tabel DTB bisa dipadatkan;

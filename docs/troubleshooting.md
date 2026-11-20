@@ -4,6 +4,14 @@ Urutkan dari yang paling sering. Setiap bagian: **gejala → sebab → cek → f
 
 ## 1. Tekan Ctrl+U: 2× bip, layar hitam, kembali ke ChromeOS
 
+> Catatan nuansa: penolakan ini **tidak universal**. Image Kali 2019.3 exynos
+> (partisi kernel tunggal + rootfs di p2) dilaporkan boot di XE303C12, dan
+> panduan Instructables "Linux on XE303C12 Chromebook" (Sirius38, 2020)
+> memakainya tanpa masalah. Yang banyak dilaporkan gagal adalah image peach-pi
+> (Exynos 5800) dan sebagian unit snow. Karena itu kit ini menyediakan **dua**
+> jalur: default `uboot-extlinux`, dan `make BOOT_MODE=vboot-direct image`
+> (layout KERN-A=p1 + rootfs=p2, sama seperti image Kali itu).
+
 **Sebab:** firmware (U-Boot H2C) menolak image partisi kernel. Ini perilaku
 terdokumentasi pada keluarga snow/peach — bahkan image yang lolos
 `futility vbutil_kernel --verify` bisa ditolak. Kadang juga murni soal media.
@@ -11,7 +19,10 @@ terdokumentasi pada keluarga snow/peach — bahkan image yang lolos
 ```sh
 # 1. pastikan flag-nya benar (dari ChromeOS: Ctrl+Alt+T -> shell)
 sudo crossystem dev_mode dev_boot_usb dev_boot_signed_only   # harus 1 1 0
-sudo crossystem hwid model                                     # catat, utk DTB
+sudo crossystem dev_boot_legacy=1     # aktifkan Alt-Legacy (Ctrl+Alt-L): jalur boot
+                                      # teks; pada board U-Boot H2C ini sering yang
+                                      # membuat payload booting terbaca
+sudo crossystem hwid model            # catat, utk DTB
 # 2. pastikan image di kartu memang punya partisi kernel yang benar
 sudo cgpt show /dev/sdb | head
 sudo futility vbutil_kernel --verify /dev/sdb1 | head -20

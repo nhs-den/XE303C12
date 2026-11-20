@@ -45,6 +45,18 @@ grow_root() {
             if command -v resize2fs >/dev/null 2>&1 && findmnt -no FSTYPE / | grep -q ext; then
                 resize2fs "$canon" 2>&1 | tail -3 || log "resize2fs perlu dijalankan manual setelah reboot"
             fi
+            # PENTING: header GPT masih menyimpan geometri disk lama setelah partisi
+            # diperbesar. Firmware U-Boot H2C di snow/peach menolak disk yang GPT-nya
+            # tidak konsisten (gejala: boot pertama OK, sesudahnya tidak boot sama sekali).
+            # `cgpt repair` menormalkan header + entri partisi. (Dipakai juga di panduan
+            # Instructables "Linux on XE303C12 Chromebook" - growpart + resize2fs + cgpt repair.)
+            if command -v cgpt >/dev/null 2>&1; then
+                log "cgpt repair $disk (sinkronkan GPT dengan ukuran disk)"
+                cgpt repair "$disk" 2>&1 | tail -2 || log "cgpt repair gagal (tidak fatal)"
+                cgpt show "$disk" >/dev/null 2>&1 || log "cek manual: sudo cgpt show $disk"
+            else
+                log "cgpt tidak ada -> apt-get install -y vboot-utils, lalu: sudo cgpt repair $disk"
+            fi
         else
             log "sfdisk --part-size gagal: $(cat /tmp/xe303os-sfdisk.err 2>/dev/null | head -2)"
             log "jalankan manual: tools/grow-partition.sh (lihat docs/install.md)"

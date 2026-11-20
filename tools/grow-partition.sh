@@ -50,6 +50,14 @@ case "$fstype" in
     swap)           swapoff "$canon"; mkswap "$canon"; swapon "$canon" ;;
     *)              die "fstype '$fstype' tak dikenal - resize manual ya" ;;
 esac
+# 4b. normalisasi GPT: tanpa ini firmware H2C bisa menolak disk setelah grow
+if command -v cgpt >/dev/null 2>&1; then
+    log "cgpt repair $disk"
+    cgpt repair "$disk" 2>&1 | tail -3 || warn "cgpt repair gagal - lanjut, tapi tes reboot sebelum cabut media lain"
+else
+    warn "cgpt tidak ada: sudo apt-get install -y vboot-utils && sudo cgpt repair $disk"
+fi
+
 sync
 info "selesai: $(lsblk -bno SIZE "$canon" | awk '{printf "%.2f GiB partisi\n", $1/1073741824}')"
 df -h / | tail -1 | sed 's/^/  root: /'
