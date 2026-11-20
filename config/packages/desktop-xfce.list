@@ -1,0 +1,15 @@
+# Xfce4: sedikit lebih berat dari LXQt, lebih matang (panel, thunar, power-manager).
+xfce4
+xfce4-panel
+xfce4-terminal
+xfce4-power-manager
+thunar
+mousepad
+lightdm
+lightdm-gtk-greeter
+fontconfig
+fonts-liberation
+fonts-dejavu
+xdg-utils
+dbus-user-session
+pipewire-pulse

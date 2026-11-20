@@ -1,0 +1,25 @@
+# Dukungan hardware Exynos 5250 (snow / XE303C12)
+# Firmware (Debian >= bookworm: firmware sudah di komponen main)
+firmware-libertas
+firmware-marvell
+firmware-misc-nonfree
+
+# Audio: codecs MAX98090 / MAX98095 via machine driver SND_SOC_SNOW
+alsa-utils
+alsa-ucm-conf
+sof-alsa-ucm-conf
+
+# Input: keyboard/matrix + touchpad Atmel maXTouch (i2c) + sensor
+input-events
+xdg-user-dirs
+
+# Manajemen daya + sensor ChromeOS (batre/charger via power_supply)
+upower
+tlp
+
+# GPU: Mali-T604 = Utgard, TIDAK ada driver GL mainline.
+# Kita pakai exynos-drm (DECON/FIMD) + fbdev/modesetting. Tanpa paket ini X tak jalan.
+xserver-xorg-core
+xserver-xorg-video-modesetting
+xserver-xorg-video-fbdev
+xserver-xorg-input-libinput

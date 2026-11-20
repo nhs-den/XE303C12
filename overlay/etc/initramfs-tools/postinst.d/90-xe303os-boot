@@ -1,0 +1,11 @@
+#!/bin/sh
+# XE303OS: hook ini ada karena /etc/kernel/postinst.d dijalankan SEBELUM
+# initramfs-tools membangun initrd (run-parts mengurutkan "90-*" dulu).
+# Setelah initrd jadi, kita rebuild extlinux.conf supaya baris INITRD valid.
+set -e
+version="$1"
+[ -x /usr/lib/xe303os/mkboot.sh ] || exit 0
+exec /usr/lib/xe303os/mkboot.sh "$version" >/dev/null 2>&1 || {
+    echo "xe303os-boot: mkboot.sh gagal untuk $version - jalankan manual: sudo /usr/lib/xe303os/mkboot.sh" >&2
+    exit 0
+}

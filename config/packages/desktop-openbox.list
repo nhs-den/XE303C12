@@ -1,0 +1,18 @@
+# Mode paling hemat: X11 + Openbox saja (tanpa DE). ~250MB.
+# Cocok dipakai sebagai basis window-manager sendiri (i3/openbox).
+xinit
+x11-xserver-utils
+x11-utils
+x11-apps
+openbox
+obconf
+rxvt-unicode
+rofi
+nitrogen
+fontconfig
+fonts-liberation
+fonts-dejavu
+lightdm
+dbus-user-session
+pipewire-pulse
+lxsession

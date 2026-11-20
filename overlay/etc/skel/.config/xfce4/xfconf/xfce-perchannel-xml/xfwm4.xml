@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- XE303OS: xfwm4 tanpa compositing (lihat catatan di xfce4-session.xml) -->
+<channel name="xfwm4" version="1.0">
+  <property name="general" type="empty">
+    <property name="use_compositing" type="bool" value="false"/>
+    <property name="frame_opacity" type="int" value="100"/>
+    <property name="title_font" type="string" value="Sans Bold 9"/>
+    <property name="theme" type="string" value="Default"/>
+    <property name="button_layout" type="string" value="O|HMC"/>
+    <property name="double_click_time" type="int" value="250"/>
+    <property name="zoom_timeslice" type="int" value="30"/>
+  </property>
+</channel>

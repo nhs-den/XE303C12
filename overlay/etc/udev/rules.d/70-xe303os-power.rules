@@ -1,0 +1,24 @@
+# XE303OS - kebijakan daya & umur eMMC untuk Exynos 5250
+#
+# CPU: schedutil (responsif, hemat) - ondemand terlalu lamban, performance panas.
+# Device pada SUBSYSTEM=="cpufreq" = /sys/.../cpufreq/policyN, attr ada di root device.
+ACTION=="add|change", SUBSYSTEM=="cpufreq", ATTR{scaling_governor}="schedutil"
+ACTION=="add|change", SUBSYSTEM=="cpufreq", ATTR{scaling_min_freq}="600000"
+
+# eMMC/SD: deadline (mq-deadline pada kernel baru) paling pas utk flash kecil
+ACTION=="add|change", SUBSYSTEM=="block", KERNEL=="mmcblk[0-9]", ATTR{queue/scheduler}="mq-deadline"
+ACTION=="add|change", SUBSYSTEM=="block", KERNEL=="mmcblk[0-9]", ATTR{queue/read_ahead_kb}="256"
+ACTION=="add|change", SUBSYSTEM=="block", KERNEL=="mmcblk[0-9]p[0-9]", ATTR{queue/add_random}="0"
+# jangan rotate-then-sleep eMMC
+ACTION=="add|change", SUBSYSTEM=="block", KERNEL=="mmcblk[0-9]", ATTR{queue/nr_requests}="64"
+
+# WiFi Marvell (SDIO): matikan runtime PM - mwifiex kehilangan asosiasi bila disuspend
+ACTION=="add", SUBSYSTEM=="mmc", ATTR{type}=="WiFi", ATTR{power/control}="on"
+ACTION=="add", SUBSYSTEM=="sdio", ATTR{device/power/control}="on"
+
+# GPU Mali-T604: tidak ada driver mainline, jadi jangan coba runtime PM ke 11800000.gpu
+ACTION=="add", SUBSYSTEM=="platform", ATTR{dev}=="11800000.gpu", ATTR{power/control}="on"
+
+# Panel: jangan biarkan DPMS penuh (PTN3460 eDP->LVDS kadang tak kembali) - lihat
+# /etc/X11/Xsession.d/90xe303os-dpms. Di sini: backlight minimal 10%.
+ACTION=="add", SUBSYSTEM=="backlight", RUN+="/bin/sh -c 'cat %S/pwmbacklight/max_brightness > /dev/null 2>&1 || true'"

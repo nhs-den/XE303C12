@@ -1,0 +1,13 @@
+/work/
+/dist/*.img
+/dist/*.img.xz
+/dist/*.img.gz
+/dist/*.iso
+/dist/*.tar
+/dist/*.sha256
+/dist/*.json
+/dist/rootfs/
+/dist/boot/
+config/build.local.conf
+*.log
+.DS_Store

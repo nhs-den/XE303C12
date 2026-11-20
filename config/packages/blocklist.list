@@ -1,0 +1,17 @@
+# Paket yang HARUS diblock agar tidak ikut terpasang (apt-mark hold / --no-install-recommends)
+# File ini dipakai build/30-packages.sh untuk menolak paket yang boros RAM/eMMC di XE303C12.
+gnome-shell
+gnome-initial-setup
+kde-plasma-desktop
+pipewire-audio
+gstreamer1.0-vaapi
+mesa-vulkan-drivers
+xserver-xorg-video-amdgpu
+xserver-xorg-video-ati
+xserver-xorg-video-nouveau
+cups-ipp-utils
+smbd
+tracker
+tracker-extract
+tracker-miner-fs
+localmail

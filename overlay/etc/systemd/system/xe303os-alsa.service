@@ -1,0 +1,15 @@
+[Unit]
+Description=XE303OS - unmute speaker MAX98090/95 (default kernel = bisu)
+Documentation=file:/usr/share/doc/xe303os/troubleshooting.md
+After=sound.target systemd-udev-settle.service
+Before=lightdm.service display-manager.service pipewire.service pulseaudio.service
+Wants=sound.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/lib/xe303os/alsa-unmute.sh
+Environment=XE303OS_NO_TEST=1
+
+[Install]
+WantedBy=multi-user.target

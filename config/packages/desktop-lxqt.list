@@ -1,0 +1,18 @@
+# Desktop LXQt + Openbox: paling ringan di 2GB RAM (tanpa compositor GL).
+# LXQt tidak butuh OpenGL, cocok karena Mali-T604 tidak punya driver mainline.
+lxqt
+lxqt-archiver
+lximage-qt
+obconf-qt
+pcmanfm-qt
+qterminal
+lxqt-policykit
+lightdm
+lightdm-gtk-greeter
+fontconfig
+fonts-liberation
+fonts-dejavu
+xdg-utils
+dbus-user-session
+pipewire-pulse
+xfce4-power-manager

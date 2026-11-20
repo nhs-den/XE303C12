@@ -1,0 +1,17 @@
+[Unit]
+Description=XE303OS - penyesuaian boot pertama (grow rootfs, SSH host key, skel)
+Documentation=file:/usr/share/doc/xe303os/install.md
+After=local-fs.target systemd-udev-settle.service
+Wants=systemd-udev-settle.service
+ConditionPathExists=!/var/lib/xe303os/firstboot.done
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/lib/xe303os/firstboot.sh
+TimeoutStartSec=5min
+Nice=10
+IOSchedulingClass=idle
+
+[Install]
+WantedBy=multi-user.target

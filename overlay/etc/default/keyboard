@@ -1,0 +1,6 @@
+# Konfigurasi keyboard (XE303C12 = layout US, tanpa NumLock fisik)
+XKBMODEL="pc105"
+XKBLAYOUT="us"
+XKBVARIANT=""
+XKBOPTIONS="lv3:ralt_switch"
+BACKSPACE="guess"

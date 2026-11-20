@@ -1,0 +1,13 @@
+#!/bin/sh
+# XE303OS: setelah install/upgrade kernel, regenerasi isi partisi BOOT
+# (zImage/uImage/initrd/DTB + extlinux.conf). Tanpa ini upgrade kernel
+# membuat XE303C12 tidak bootable, karena tidak ada GRUB yang otomatis.
+set -e
+version="$1"
+zimage="${2:-/boot/vmlinuz-${version}}"
+[ -x /usr/lib/xe303os/mkboot.sh ] || exit 0
+if [ ! -f "$zimage" ]; then
+    echo "xe303os-boot: $zimage belum ada - lewati (akan dibuat hook initramfs)" >&2
+    exit 0
+fi
+exec /usr/lib/xe303os/mkboot.sh --zimage "$zimage" "$version"

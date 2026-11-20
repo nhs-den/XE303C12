@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- XE303OS: matikan compositor Xfwm4. Mali-T604 tidak punya driver GL mainline,
+     jadi compositing hanya memakan RAM + bikin artefak pada panel eDP. -->
+<channel name="xfce4-session" version="1.0">
+  <property name="general" type="empty">
+    <property name="FailsafeSessionName" type="empty"/>
+    <property name="LockCommand" type="empty"/>
+    <property name="SessionName" type="string" value="Default"/>
+    <property name="SaveOnLogout" type="bool" value="false"/>
+  </property>
+  <property name="startup" type="empty">
+    <property name="agent" type="empty">
+      <property name="disabled" type="bool" value="true"/>
+    </property>
+  </property>
+</channel>

@@ -1,0 +1,11 @@
+#!/bin/sh
+# XE303OS: bersihkan direktori /boot/<kver> kernel lama supaya eMMC 16GB tidak penuh.
+set -e
+version="$1"
+[ -x /usr/lib/xe303os/mkboot.sh ] || exit 0
+if [ "$version" = "$(uname -r)" ]; then
+    echo "xe303os-boot: tidak prune kernel yang sedang jalan" >&2
+    exit 0
+fi
+rm -rf "/boot/${version}"
+exec /usr/lib/xe303os/mkboot.sh >/dev/null 2>&1 || true

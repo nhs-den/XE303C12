@@ -1,0 +1,67 @@
+Contoh keluaran build/lib/layout.sh (dibuat oleh `make layout`)
+config: SUITE=trixie ARCH=armhf BOARD=snow BOOT_MODE=uboot-extlinux VERSION=1.0.0
+
+== tabel partisi: nama  start(sektor)  size(sektor)
+  KERN-A        2048      32768   (  16.0 MiB)
+  KERN-B       34816      32768   (  16.0 MiB)
+  BOOT         67584     393216   ( 192.0 MiB)
+  ROOTFS      460800    6963200   (3400.0 MiB)
+  total image: 7426048 sektor = 3.54 GiB
+
+== script partisi untuk sfdisk (stdin)
+  label: gpt
+  label-id: 58453330-3343-4C31-2D53-453033433132
+  unit: sectors
+  first-lba: 2048
+  last-lba: 7423999
+  start=2048, size=32768, type=FE3A2A5D-4F32-41A7-B725-ACCC3285A309, name="KERN-A", uuid=d1e2f3a4-1111-4222-8333-584530334f53
+  start=34816, size=32768, type=FE3A2A5D-4F32-41A7-B725-ACCC3285A309, name="KERN-B", uuid=d1e2f3a4-2222-4222-8333-584530334f53
+  start=67584, size=393216, type=0FC63DAF-8483-4772-8E79-3D69D8477DE4, name="BOOT", uuid=c7d5e3f9-8b64-4c7a-9e30-584530334f53
+  start=460800, size=6963200, type=0FC63DAF-8483-4772-8E79-3D69D8477DE4, name="ROOTFS", uuid=b6c4d2e8-7a53-4b69-8d2f-584530334f53
+
+== extlinux/extlinux.conf (partisi BOOT; dibaca U-Boot chainloading)
+  DEFAULT xe303os-exynos5250-snow
+  TIMEOUT 30
+  
+  LABEL xe303os-exynos5250-snow
+    MENU LABEL XE303OS 1.0.0 (trixie/6.12.94+deb13-armmp, exynos5250-snow)
+    KERNEL /6.12.94+deb13-armmp/vmlinuz
+    INITRD /6.12.94+deb13-armmp/initrd.img
+    FDT /6.12.94+deb13-armmp/exynos5250-snow.dtb
+    APPEND console=tty1 clk_ignore_unused cma=64M coherent_pool=1M vmalloc=256M nosoftlockup quiet log_buf_len=2M root=UUID=a5b3c1d7-6f42-4a58-9c1e-584530334f53 rootwait rw
+  
+  LABEL xe303os-exynos5250-snow-rev5
+    MENU LABEL XE303OS 1.0.0 (trixie/6.12.94+deb13-armmp, exynos5250-snow-rev5)
+    KERNEL /6.12.94+deb13-armmp/vmlinuz
+    INITRD /6.12.94+deb13-armmp/initrd.img
+    FDT /6.12.94+deb13-armmp/exynos5250-snow-rev5.dtb
+    APPEND console=tty1 clk_ignore_unused cma=64M coherent_pool=1M vmalloc=256M nosoftlockup quiet log_buf_len=2M root=UUID=a5b3c1d7-6f42-4a58-9c1e-584530334f53 rootwait rw
+  
+  LABEL xe303os-exynos5250-spring
+    MENU LABEL XE303OS 1.0.0 (trixie/6.12.94+deb13-armmp, exynos5250-spring)
+    KERNEL /6.12.94+deb13-armmp/vmlinuz
+    INITRD /6.12.94+deb13-armmp/initrd.img
+    FDT /6.12.94+deb13-armmp/exynos5250-spring.dtb
+    APPEND console=tty1 clk_ignore_unused cma=64M coherent_pool=1M vmalloc=256M nosoftlockup quiet log_buf_len=2M root=UUID=a5b3c1d7-6f42-4a58-9c1e-584530334f53 rootwait rw
+  
+  LABEL xe303os-exynos5800-peach-pi
+    MENU LABEL XE303OS 1.0.0 (trixie/6.12.94+deb13-armmp, exynos5800-peach-pi)
+    KERNEL /6.12.94+deb13-armmp/vmlinuz
+    INITRD /6.12.94+deb13-armmp/initrd.img
+    FDT /6.12.94+deb13-armmp/exynos5800-peach-pi.dtb
+    APPEND console=tty1 clk_ignore_unused cma=64M coherent_pool=1M vmalloc=256M nosoftlockup quiet log_buf_len=2M root=UUID=a5b3c1d7-6f42-4a58-9c1e-584530334f53 rootwait rw
+
+== env.txt (fallback utk nv_uboot yang membaca env.txt + bootm)
+  # XE303OS - environment untuk U-Boot chainloading (flow env.txt)
+  boot_part=3
+  root_part=4
+  loadaddr=0x40008000
+  dtaddr=0x42000000
+  initrdaddr=0x43000000
+  kernel_path=/6.12.94+deb13-armmp/zImage
+  initrd_path=/6.12.94+deb13-armmp/initrd.img
+  dtb_path=/6.12.94+deb13-armmp/exynos5250-snow.dtb
+  bootargs=console=tty1 clk_ignore_unused cma=64M coherent_pool=1M vmalloc=256M nosoftlockup quiet log_buf_len=2M root=UUID=a5b3c1d7-6f42-4a58-9c1e-584530334f53 rootwait rw
+
+== validasi
+  [ ok ] layout valid: KERN-A KERN-B BOOT ROOTFS
